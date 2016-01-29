@@ -6,7 +6,7 @@
 <br>
 第一步:
 -----
-    先把文件下载下来，并且下载[mongodb](http://www.mongodb.org/downloads)
+先把文件下载下来，并且下载MongoDB数据库 [http://www.mongodb.org/downloads](http://www.mongodb.org/downloads)
 <br>
 第二步:
 ------
