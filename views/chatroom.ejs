@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<script src="/javascripts/jquery-1.12.0.min.js"></script>
+<link rel='stylesheet' href='/stylesheets/chatroom.css'/>
+</head>
+<body>
+<div class="chat_window"></div>
+<div class="online">
+	<h1 id="user">用户名:<br></h1>
+	<hr>
+	<h1>当前在线人数为:<span id="number"></span></h1>
+	<div id="people">人员名单如下:<br></div>
+</div>
+<div class="input_text">
+<textarea id="message"></textarea>
+<button>发送消息</button>
+</div>
+</form>
+</body>
+<script src="/javascripts/socket.io.js"></script>
+<script>
+  var socket = io.connect('http://localhost:3000');
+  var username = '<%= username %>';
+
+  $(function(){
+  //  发送新登录用户
+  $('#user').append(username);
+  socket.emit('update', username);
+  })
+
+    $('button').click(function(){
+      var content = $('#message').val();
+      if(content!=''){
+      	console.log(content);
+      	var obj = {
+      		username: username,
+      		message : content
+      	};
+      	//  发送消息
+      	 socket.emit('message', obj );
+  	 	 $('#message').val('');
+      }
+  })
+    //  接受更新消息
+	socket.on('message', function(obj) { 
+		$('.chat_window').append('<p>'+obj.username+'说：'+obj.message+'</p>')
+	});
+    
+    //  获得在线人数与在线名单
+	socket.on('update',function(obj) {
+		$('#number').text(obj.number);
+		$('#people').html('');
+		for(var i=0; i<obj.people.length; i++){
+			$('#people').append('<h3>'+obj.people[i]+'</h3>');
+		}
+	})
+
+	//  重复登录
+	// socket.on('repeat',function(obj) {
+	// 	window.location.href = '/';
+	// });
+
+	//  轮询判断用户是否退出
+	setInterval(function(){
+		socket.emit('exit',username);
+	},4000);
+
+</script>
+</html>

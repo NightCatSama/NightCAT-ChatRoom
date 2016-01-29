@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>注册页面</title>
+    <script src="/javascripts/jquery-1.12.0.min.js"></script>
+    <link rel='stylesheet' href='/stylesheets/register.css' />
+  </head>
+  <body>
+  <div id="index_page">
+    <h1><img src="images/cat.jpg" alt="Logo">新用户注册</h1>
+    <form method="POST" id="register" onsubmit="return validate_form(this)">
+    <fieldset>
+      <div>
+        <label for="username">用户名</label>
+        <input type="text" name="username">
+      </div>
+      <div>
+        <label for="password">密码</label>
+        <input type="password" name="password">
+      </div>
+      <div>
+        <label >再次输入密码</label>
+        <input type="password" id="password_again"><span style="margin-left:10px;position:relative; color:#E74C3C;display:none;">密码不相同</span>
+      </div>
+      <div>
+        <a onclick="ajaxsubmit();">注册</a>
+        <input type="reset" value="重置">
+      </div>
+    </fieldset>
+  </div>
+  </body>
+  <script>
+  var ajaxFlag = true;
+  var password = document.getElementsByName('password')[0];
+  var p_again = document.getElementById('password_again');
+  function validate_password(alerttxt){
+    if(p_again.value==null || p_again.value== ''){
+      alert(alerttxt);return false;
+    }
+    else if(p_again.value!==password.value){
+      p_again.nextSibling.style.display = 'inline';
+      return false;
+    }
+    else {
+      p_again.nextSibling.style.display = 'none';return true;
+    }
+  }
+function validate_required(field,alerttxt)
+{
+with (field)
+  {
+  if (value==null||value=="")
+    {alert(alerttxt);ajaxFlag = false;return false}
+  else {ajaxFlag = true;return true}
+  }
+}
+
+function validate_form(thisform)
+{
+with (thisform)
+  {
+  if (validate_required(username,"用户名不能为空")==false)
+    {username.focus();ajaxFlag = false;return false}
+    if (validate_required(password,"密码不能为空")==false)
+    {password.focus();ajaxFlag = false;return false}
+    if (validate_password("请再一次输入密码")==false)
+    {p_again.focus();ajaxFlag = false;return false}
+  }
+  ajaxFlag = true;
+  return false;
+}
+
+function ajaxsubmit(){
+  var $form = $('#register');
+  $form.submit();
+if(ajaxFlag){
+  $.ajax({
+    type:'POST',
+    url: '/inputData',
+    async: false,
+    data: $form.serialize(),
+    success: function(data){
+      if(data=='用户名已存在'){console.log(data);alert(data);return false;}
+      else {location.href ="loading?username="+data;}
+    },
+    error: function(error){
+      console.log("ERROR:   "+error);
+    }
+  })
+}
+}
+  </script>
+</html>
