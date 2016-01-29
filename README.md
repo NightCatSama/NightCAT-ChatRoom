@@ -1,5 +1,5 @@
 # NightCAT-ChatRoom
-基于NodeJS+Express模块+MongoDB数据库制作的多人聊天室
+####基于NodeJS+Express模块+MongoDB数据库制作的多人聊天室<br>
 *目前只实现了基础功能, 欢迎Pull Requests╰(●'◡'●)╮*
 <br>
 *并且内含大量中文注释，适合入门初学者使用*
