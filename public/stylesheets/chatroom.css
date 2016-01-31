@@ -110,7 +110,7 @@ section>span {
 }
 .my_chat .my_name {
 	float:right;
-	background-color: #34495E;
+	background-color: #123456;
 	color:#FFF;
 }
 .my_chat .my_msg{
@@ -181,5 +181,6 @@ button {
 	padding:10px;
 	left:50%;
 	top:70%;
+	font-weight: bold;
 	margin-left:-50px;
 }

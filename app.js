@@ -78,7 +78,6 @@ app.post('/inputData',function(req,res){
       res.send('用户名已存在');
       res.end();
     }
-
   });
 })
 

@@ -69,6 +69,7 @@ if(ajaxFlag){
     data: $form.serialize(),
     success: function(data){
       if(data=='密码错误'||data=='用户名不存在'){console.log(data);alert(data);return false;}
+      
       else {location.href ="Chatroom?username="+data;}
     },
     error: function(error){
