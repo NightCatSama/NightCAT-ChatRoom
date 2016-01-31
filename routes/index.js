@@ -12,7 +12,10 @@ router.get('/', function(req, res, next) {
 
 router.get('/chatroom', function(req, res, next) {
 	var stringA = req.originalUrl;
+	// console.log(stringA+'<<<<<<<<<<<<<<<<<<<<<<<<<')
 	username = stringA.substr(stringA.indexOf("?")+10);
+	username = decodeURIComponent(username);
+	console.log(username+'<<<<<<<<<<<<<<<<<<<<<<<<<')
 	if(username!=''&&username!=null){flag=true;};
     if(flag){
     // res.redirect('./chatroom');

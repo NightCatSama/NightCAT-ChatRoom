@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>注册页面</title>
+    <meta charset="utf-8"> 
     <script src="/javascripts/jquery-1.12.0.min.js"></script>
     <link rel='stylesheet' href='/stylesheets/register.css' />
   </head>
@@ -33,38 +34,47 @@
   var ajaxFlag = true;
   var password = document.getElementsByName('password')[0];
   var p_again = document.getElementById('password_again');
-  function validate_password(alerttxt){
-    if(p_again.value==null || p_again.value== ''){
-      alert(alerttxt);return false;
-    }
-    else if(p_again.value!==password.value){
-      p_again.nextSibling.style.display = 'inline';
-      return false;
-    }
-    else {
-      p_again.nextSibling.style.display = 'none';return true;
-    }
+
+//  判断两次密码是否相同
+function validate_password(alerttxt){
+  if(p_again.value==null || p_again.value== ''){
+    alert(alerttxt);return false;
   }
-function validate_required(field,alerttxt)
-{
-with (field)
-  {
-  if (value==null||value=="")
-    {alert(alerttxt);ajaxFlag = false;return false}
-  else {ajaxFlag = true;return true}
+  else if(p_again.value!==password.value){
+    p_again.nextSibling.style.display = 'inline';
+    return false;
+  }
+  else {
+    p_again.nextSibling.style.display = 'none';return true;
+  }
+}
+//  判断账号密码是否为空
+function validate_required(field,alerttxt){
+  with (field){
+    if (value==null||value=="")
+      {alert(alerttxt);ajaxFlag = false;return false}
+    else {ajaxFlag = true;return true}
+  }
+}
+//  判断账号是否超过字数
+function validata_unable(field,alerttxt){
+    with (field){
+    if (value.length>9)
+      {alert(alerttxt);ajaxFlag = false;return false}
+    else {ajaxFlag = true;return true}
   }
 }
 
-function validate_form(thisform)
-{
-with (thisform)
-  {
-  if (validate_required(username,"用户名不能为空")==false)
-    {username.focus();ajaxFlag = false;return false}
+function validate_form(thisform){
+  with (thisform){
+    if (validate_required(username,"用户名不能为空")==false)
+     {username.focus();ajaxFlag = false;return false}
+    if (validata_unable(username,"用户名不能超过10个字符")==false)
+     {username.focus();ajaxFlag = false;return false}
     if (validate_required(password,"密码不能为空")==false)
-    {password.focus();ajaxFlag = false;return false}
+     {password.focus();ajaxFlag = false;return false}
     if (validate_password("请再一次输入密码")==false)
-    {p_again.focus();ajaxFlag = false;return false}
+     {p_again.focus();ajaxFlag = false;return false}
   }
   ajaxFlag = true;
   return false;
@@ -81,7 +91,7 @@ if(ajaxFlag){
     data: $form.serialize(),
     success: function(data){
       if(data=='用户名已存在'){console.log(data);alert(data);return false;}
-      else {location.href ="loading?username="+data;}
+      else {location.href ="/";}
     },
     error: function(error){
       console.log("ERROR:   "+error);

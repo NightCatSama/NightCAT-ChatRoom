@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8"> 
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
     <title>NightCAT Chatroom</title>
     <script src="/javascripts/jquery-1.12.0.min.js"></script>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
   <div id="index_page">
-    <h1><img src="images/cat.jpg" alt="Logo">NightCAT Chatroom</h1>
+    <h1><img src="images/cat.jpg" alt="Logo">NightCAT <span>Chatroom</span></h1>
     <p>欢迎来到夜猫聊天室</p>
     <form method="POST" id="login" onsubmit="return validate_form(this)">
     <fieldset>
@@ -26,8 +28,12 @@
  </div>
 </body>
 <script>
+//  客户端验证没通过时，不提交到服务端认证
 var ajaxFlag = true;
-var alerttext = "<%= alerttext %>"
+//  服务端发来验证失败文本
+var alerttext = "<%= alerttext %>";
+
+//  客户端输入验证
 if(alerttext){alert(alerttext);alerttext='';}
   function validate_required(field,alerttxt)
 {
@@ -51,6 +57,7 @@ with (thisform)
   ajaxFlag = true;return false;
 }
 
+//  服务端用户名验证
 function ajaxsubmit(){
   var $form = $('#login');
   $form.submit();
@@ -70,6 +77,11 @@ if(ajaxFlag){
   })
 }
 }
+
+//  回车时登录
+$(window).keydown(function (event) {
+    if (event.keyCode == 13) { ajaxsubmit(); }
+});
 
 </script>
 </html>

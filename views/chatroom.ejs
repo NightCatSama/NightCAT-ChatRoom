@@ -1,17 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title></title>
+<title>夜猫聊天室</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">    
+<link rel = "Shortcut Icon" href=/favicon.ico> 
+<meta name="applicable-device" content="pc,mobile">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
 <script src="/javascripts/jquery-1.12.0.min.js"></script>
 <link rel='stylesheet' href='/stylesheets/chatroom.css'/>
 </head>
 <body>
+<div id="header">
+	<img src="images/cat.jpg" alt="Logo">
+	<p>NightCAT Chatroom</p>
+</div>
 <div class="chat_window"></div>
 <div class="online">
-	<h1 id="user">用户名:<br></h1>
+	<h3 id="user">用户名:</h3>
 	<hr>
-	<h1>当前在线人数为:<span id="number"></span></h1>
-	<div id="people">人员名单如下:<br></div>
+	<h3>当前在线人数为:<span id="number"></span></h3>
+	<div>人员名单如下:<span class="people"></span></div>
 </div>
 <div class="input_text">
 <textarea id="message"></textarea>
@@ -21,51 +29,68 @@
 </body>
 <script src="/javascripts/socket.io.js"></script>
 <script>
-  var socket = io.connect('http://localhost:3000');
-  var username = '<%= username %>';
+var socket = io.connect('http://localhost:3000');
+var username = '<%= username %>';
 
-  $(function(){
-  //  发送新登录用户
-  $('#user').append(username);
-  socket.emit('update', username);
-  })
+$(function(){
+//  发送新登录用户
+$('#user').append(username);
+socket.emit('update', username);
+})
 
-    $('button').click(function(){
-      var content = $('#message').val();
-      if(content!=''){
-      	console.log(content);
-      	var obj = {
-      		username: username,
-      		message : content
-      	};
-      	//  发送消息
-      	 socket.emit('message', obj );
-  	 	 $('#message').val('');
-      }
-  })
-    //  接受更新消息
-	socket.on('message', function(obj) { 
-		$('.chat_window').append('<p>'+obj.username+'说：'+obj.message+'</p>')
-	});
-    
-    //  获得在线人数与在线名单
-	socket.on('update',function(obj) {
-		$('#number').text(obj.number);
-		$('#people').html('');
-		for(var i=0; i<obj.people.length; i++){
-			$('#people').append('<h3>'+obj.people[i]+'</h3>');
-		}
-	})
+//  发送消息方法
+var sendMsg = function(){
+  var reg = /\n/gi;
+  var content = $('#message').val().replace(reg,"<br/>");
+  if(content!=''){
+  	var obj = {
+  		username: username,
+  		message : content
+  	};
+  	//  发送消息到服务端
+  	 socket.emit('message', obj );
+	 $('#message').val('');
+  }
+}
+//  接受更新消息
+socket.on('message', function(obj) {
+	var reg=/\</gi;
+	obj.message = obj.message.replace(reg,'&lt;')
+	if(obj.username == username){
+		$('.chat_window').append("<section class='my_chat'><div class='my_name'>"+obj.username+"</div><span class='my_msg'>"+obj.message+"</span></section>");
+	}
+	else {
+		$('.chat_window').append("<section class='all_chat'><div class='all_name'>"+obj.username+"</div><span class='all_msg'>"+obj.message+"</span></section>");
+	}
+	//  聊天框置底
+	$('.chat_window').scrollTop($('.chat_window').scrollTop()+1000);
+});
 
-	//  重复登录
-	// socket.on('repeat',function(obj) {
-	// 	window.location.href = '/';
-	// });
+//  获得在线人数与在线名单
+socket.on('update',function(obj) {
+	$('#number').text(obj.number);
+	$('.people').html('');
+	for(var i=0; i<obj.people.length; i++){
+		$('.people').append('<p>'+obj.people[i]+'</p>');
+	}
+})
 
-	//  轮询判断用户是否退出
-	setInterval(function(){
-		socket.emit('exit',username);
-	},4000);
+//  轮询判断用户是否退出
+setInterval(function(){
+	socket.emit('exit',username);
+},2000);
+
+//  点击发送或回车 > 发送消息
+$('button').click(sendMsg);
+$(window).keydown(function (event) {
+	if(event.keyCode == 13 && event.ctrlKey){
+		$('#message').val($('#message').val() + "\n");
+	}
+    else if (event.keyCode == 13) {
+    	event.preventDefault();
+    	sendMsg();
+    }
+});
 
 </script>
 </html>

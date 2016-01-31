@@ -58,7 +58,6 @@ io.sockets.on('connection', function (socket) {
     });
     //  添加新用户并发布出去
     socket.on('update',function(obj){
-        
         if(!online_people.people.some(function(item, index, array){
            return online_people.people[index]==obj})
         ){
@@ -71,11 +70,6 @@ io.sockets.on('connection', function (socket) {
         console.log('总人数为:'+online_people.number+'!人员名单为'+online_people.people);
         }
         else {
-            // 重复登录
-            // io.emit('repeat');
-            // online_people.number = online_people.number -1 ;
-            // var index = online_people.people.indexOf(obj);
-            // online_people.people.splice(index,1);
             setTimeout(function(){
                clearTimeout(timeoutFlag[obj]);
             io.emit('update', online_people);
@@ -92,14 +86,16 @@ io.sockets.on('connection', function (socket) {
         )
         {
           timeoutFlag[obj] = setTimeout(function(){
-            console.log(online_people.people+'---减一之前---'+online_people.number)
+            // console.log(online_people.people+'---减一之前---'+online_people.number)
             online_people.number = online_people.number -1 ;
             var index = online_people.people.indexOf(obj);
             online_people.people.splice(index,1);
-            console.log(online_people.people+'---减一之后---'+online_people.number)
-          },6000);
+
+            console.log("用户"+obj+"退出了聊天室");
+            // console.log(online_people.people+'---减一之后---'+online_people.number)
+          },4000);
         }
-        console.log(online_people.people+"---Exit消息收到了---"+obj);
+        // console.log(online_people.people+"---Exit消息收到了---"+obj);
         io.emit('update', online_people);
     });
 });

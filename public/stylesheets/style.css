@@ -4,6 +4,9 @@ html,body {
 	height:100%;
  	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
+@media all and (max-width:500px){
+	h1>span{display:none;}
+}
 
 #index_page {
 	width:100%;
