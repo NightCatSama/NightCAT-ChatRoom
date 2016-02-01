@@ -30,17 +30,11 @@ router.get('/chatroom', function(req, res, next) {
 	});
 	setTimeout(function(){
     if(flag){
-    // res.redirect('./chatroom');
     res.render('chatroom',{ username : username });
 	}
 	else {res.redirect('error');}
 	},200)
 });
-
-// router.get('/chatroom',function(req,res,next){
-// 	res.render('chatroom', {username : username });
-// })
-
 
 router.use('/register',function(req,res,next) {
 	res.render('register');

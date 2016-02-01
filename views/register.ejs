@@ -59,7 +59,7 @@ function validate_required(field,alerttxt){
 //  判断账号是否超过字数
 function validata_unable(field,alerttxt){
     with (field){
-    if (value.length>9)
+    if (value.length>10)
       {alert(alerttxt);ajaxFlag = false;return false}
     else {ajaxFlag = true;return true}
   }

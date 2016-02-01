@@ -64,6 +64,9 @@ section>div{
 	cursor: default;
 	position: relative;
 }
+section>div:hover{
+	white-space:normal!important;
+}
 
 section>span {
 	padding:5px 10px;
@@ -113,6 +116,7 @@ section>span {
 	background-color: #123456;
 	color:#FFF;
 }
+
 .my_chat .my_msg{
 	float:right;
 	margin-right:15px;
