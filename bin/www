@@ -90,6 +90,7 @@ io.sockets.on('connection', function (socket) {
             var index = online_people.people.indexOf(obj);
             online_people.people.splice(index,1);
 
+            io.emit('exit',obj)
             console.log(obj+"退出了聊天室");
           },4000);
         }

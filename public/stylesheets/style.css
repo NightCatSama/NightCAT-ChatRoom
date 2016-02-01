@@ -67,6 +67,7 @@ html,body {
 }
  input:focus {
 	outline: none;
+	box-shadow: 0 0 15px 0 #5DADE2;
 }
  a {
  	display: inline-block;

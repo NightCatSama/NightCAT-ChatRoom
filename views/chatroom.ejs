@@ -11,30 +11,31 @@
 </head>
 <body>
 <div id="header">
-	<img src="images/cat.jpg" alt="Logo">
+	<img src="images/logo_g.jpg" alt="Logo">
 	<p>NightCAT Chatroom</p>
 </div>
-<div class="chat_window"></div>
-<div class="online">
-	<h3 id="user">用户名:</h3>
-	<hr>
-	<h3>当前在线人数为:<span id="number"></span></h3>
-	<div>人员名单如下:<span class="people"></span></div>
+<div class="chat_window">
+	<div class="online_people">当前在线人数为:<span></span></div>
 </div>
 <div class="input_text">
 <textarea id="message"></textarea>
 <button>发送消息</button>
 </div>
 </form>
+<div class="newUser"><img src="images/news.png"/><span></span></div>
 </body>
 <script src="/javascripts/socket.io.js"></script>
 <script>
 var socket = io.connect('http://localhost:3000');
 var username = '<%= username %>';
+var number = 0;
+var online = {
+	number: 0,
+	people: {}
+}
 
 $(function(){
 //  发送新登录用户
-$('#user').append(username);
 socket.emit('update', username);
 })
 
@@ -69,11 +70,25 @@ socket.on('message', function(obj) {
 
 //  获得在线人数与在线名单
 socket.on('update',function(obj) {
-	$('#number').text(obj.number);
-	$('.people').html('');
-	for(var i=0; i<obj.people.length; i++){
-		$('.people').append('<p>'+obj.people[i]+'</p>');
+	if(online.number<obj.number){
+		$('.newUser>span').text(obj.people[obj.people.length-1]+'进入聊天室');
+		$('.newUser').addClass('newUser_out');
+		popup_news();
 	}
+	else if(online.number>obj.number){
+		for(var i=0;i<online.number;i++){
+			if(online.people[i]!==obj.people[i]){
+				$('.newUser>span').text(online.people[i]+'退出聊天室');
+				$('.newUser').addClass('newUser_out');
+				popup_news();
+				break;
+			}
+		}
+	}
+
+	online.number=obj.number;
+	online.people=obj.people;
+	$('.online_people>span').text(online.number);
 })
 
 //  轮询判断用户是否退出
@@ -92,6 +107,13 @@ $(window).keydown(function (event) {
     	sendMsg();
     }
 });
+
+//  消息栏回缩
+var popup_news = function(){
+	setTimeout(function(){
+		$('.newUser').removeClass('newUser_out');
+	},3000);
+}
 
 </script>
 </html>

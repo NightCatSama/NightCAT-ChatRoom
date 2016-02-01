@@ -63,6 +63,7 @@ html,body {
 }
  input:focus {
 	outline: none;
+	box-shadow: 0 0 15px 0 #5DADE2;
 }
  input[type="submit"],input[type="reset"],a{
 	margin-top:30px;

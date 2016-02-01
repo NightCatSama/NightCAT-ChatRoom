@@ -1,25 +1,29 @@
 *{margin:0;padding:0}
-html,body {width:100%;height:100%;letter-spacing: -0.5em;overflow: hidden;font-family: '微软雅黑';background-color: #333;}
-
+html {width:100%;height:100%;}
+body {
+	width:100%;height:100%;letter-spacing: -0.5em;overflow: hidden;font-family: '微软雅黑';background-color: #333;
+	// background-image: url(../images/bg.png);background-repeat: repeat;background-size:100% auto;
+	background-image: linear-gradient(90deg,#FFF,#555,#FFF);;
+}
 @media all and (max-width:768px) {
-	.online {display: none!important;}
-	.chat_window{width:80%!important;}
-	.input_text {width:100%!important;}
-	textarea{padding:0!important;}
+	#header,.chat_window,.input_text{width:100%!important;margin:0!important;}
 }
 
 #header {
 	height:10%;
-	width:100%;
-	background-color: #000;
+	width:60%;
+	margin-left:20%;
+	background-color: #333;
 	color:#FFF;
 	text-align: center;
 	overflow: hidden;
 }
 #header img{
-	height:100%;
+	height:80%;
 	width:auto;
 	vertical-align: middle;
+	position: relative;
+	top:10%;
 }
 #header p{
 	font-family: 'Georgia';
@@ -28,16 +32,15 @@ html,body {width:100%;height:100%;letter-spacing: -0.5em;overflow: hidden;font-f
 	letter-spacing: 0;
 	font-size: 30px;
 	position: relative;
-	top:5px;
+	top:15px;
 }
 
 .chat_window {
 	letter-spacing: 0;
 	float: left;
-	margin-left:10%;
-	margin-top:3%;
+	margin-left:20%;
 	width:60%;
-	height:60%;
+	height:65%;
 	display: inline-block;
 	background-color: #F2F2F2;
 	vertical-align: top;
@@ -45,19 +48,66 @@ html,body {width:100%;height:100%;letter-spacing: -0.5em;overflow: hidden;font-f
 	overflow-y: auto;
 	overflow-x:hidden;
 }
+.chat_window .online_people{
+	left:50%;
+	margin-left:-60px;
+	width:122px;
+	font-size: 14px;
+	color:#999;
+	position: fixed;
+}
+.newUser{
+	display: block;
+	position: absolute;
+	right:-20%;
+	top:10%;
+	background-color: #34495E;
+	color:#FFF;
+	letter-spacing: 0;
+	line-height: 80px;
+	text-align: center;
+	min-width:15%;
+	height:80px;
+	transition:right 0.5s;
+}
+.newUser_out{
+	right:0;
+	transition:right 0.5s;
+}
+.newUser::before{
+	content: '';
+	position: absolute;
+	width:10px;
+	height:100%;
+	background-color: #2980B9;
+	left: 0;
+}
+.newUser img{
+	width:30px;
+	padding:0 5px 0 10px;
+}
+.newUser>span{
+	text-overflow:ellipsis;
+}
 section {
 	display: block;
 	clear: both;
-	width:50%;
-	width:40%;
+	width:80%;
 	position: relative;
-	font-size: 18px;
+	font-size: 16px;
+	padding: 5px 0;
+}
+section:nth-child(2){
+	margin-top:10px;
+}
+section:last-child{
+	margin-bottom:10px;
 }
 
 section>div{
 	max-width:20%;
 	border-radius: 10px;
-	padding:5px 10px;
+	padding:9px 12px;
 	white-space:nowrap;
 	text-overflow:ellipsis;
 	overflow:hidden;
@@ -69,10 +119,10 @@ section>div:hover{
 }
 
 section>span {
-	padding:5px 10px;
+	padding:10px 12px 7px 12px;
 	min-height:25px;
 	border-radius: 10px;
-	max-width:63%;
+	max-width:80%;
 	background-color: #FFF;
 	word-wrap:break-word;
 }
@@ -80,7 +130,7 @@ section>span {
 .all_chat {
 	float:left;
 	text-align: left;
-	padding:10px 0 5px 15px;
+	padding-left:15px;
 }
 .all_chat .all_name {
 	float:left;
@@ -109,7 +159,7 @@ section>span {
 .my_chat {
 	float:right;
 	text-align: left;
-	padding:10px 15px 2px 0;
+	padding-right:15px;
 }
 .my_chat .my_name {
 	float:right;
@@ -137,54 +187,51 @@ section>span {
     border-bottom: 5px solid transparent;
 }
 
-.online {
-	float: right;
-	letter-spacing: 0;
-	padding:0 2% 0 2%;
-	width:16%;
-	height:90%;
-	margin-top:1px;
-	display: inline-block;
-	color:#FFF;
-	background-color: #000;
-}
-.online h3{
-	margin-top:50px;
-}
-#people{
-	color:#FFF;
-}
-
 .input_text {
 	float: left;
 	vertical-align: top;
+	background-color: #F2F2F2;
 	letter-spacing: 0;
-	width:80%;
+	width:60%;
+	margin-left:20%;
 	display: inline-block;
 	height:25%;
 	position: relative;
-
 }
 
 textarea {
 	position: absolute;
 	resize:none;
-	width:80%;
-	left:10%;
-	top:5%;
+	width:96%;
+	left:1%;
+	padding:1%;
 	height:60%;
 	font-size: 18px;
 	line-height: 20px;
-	padding:3px;
 	color:#34495E;
+	border:1px #ccc solid;
 }
 
 button {
 	position: absolute;
-	width:100px;
-	padding:10px;
-	left:50%;
-	top:70%;
+	background-color: #FFF;
+	color:#999;
+	border-radius: 3px;
+	width:120px;
+	border:1px #999 solid;
+	outline: none;
+	padding:10px 25px;
+	right:20px;
+	top:75%;
+	cursor: pointer;
 	font-weight: bold;
-	margin-left:-50px;
 }
+button::before{
+	content: '按下Ctrl+Enter换行';
+	cursor: default;
+	color:#999;
+	position: absolute;
+	left:-130px;
+	top:10px;
+}
+button:focus{outline: none;}
