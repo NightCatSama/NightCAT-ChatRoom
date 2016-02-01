@@ -15,17 +15,18 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/chatroom', function(req, res, next) {
+	var username = '';
 	var collection = db.get("userdata");
 	var stringA = req.originalUrl;
-	console.log(stringA+'>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-	username =  decodeURIComponent(stringA.substr(stringA.indexOf("?")+10));
-	if(username!=''&&username!=null){flag=true;}
+	var UID =  parseInt(stringA.substr(stringA.indexOf("?")+5));
+	if(UID!=''&&UID!=null){flag=true;}
 	collection.find({
-	  "username" : username
+    	"UID" : UID
 	},function(err,docs){
 	  if(docs==''||docs==null){
 	  	flag=false;
-	}
+		} 
+	else { username = docs[0].username }
 	});
 	setTimeout(function(){
     if(flag){

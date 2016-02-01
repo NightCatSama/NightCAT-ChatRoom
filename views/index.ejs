@@ -70,7 +70,7 @@ if(ajaxFlag){
     success: function(data){
       if(data=='密码错误'||data=='用户名不存在'){console.log(data);alert(data);return false;}
       
-      else {location.href ="Chatroom?username="+data;}
+      else {location.href ="Chatroom?UID="+data.UID;}
     },
     error: function(error){
       console.log("ERROR:   "+error);

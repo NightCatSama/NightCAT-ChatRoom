@@ -46,7 +46,7 @@ app.post('/login',function(req,res){
       res.end();
     }else {
       if(docs[0].password == password){
-      res.send(username)
+      res.send(docs[0]);
       res.end();
       }else {
         console.log("密码错误!");
@@ -67,9 +67,11 @@ app.post('/inputData',function(req,res){
     "username" : username
   },function(err,docs){
     if(docs==''||docs==null){
+      var UID = Math.ceil(Math.random()*9000000000+999999999);
       collection.insert({
         "username" : username,
-        "password" : password
+        "password" : password,
+        "UID" : UID
       });
       res.send(username);
       res.end();

@@ -40,8 +40,7 @@ socket.emit('update', username);
 
 //  发送消息方法
 var sendMsg = function(){
-  var reg = /\n/gi;
-  var content = $('#message').val().replace(reg,"<br/>");
+	var content = $('#message').val();
   if(content!=''){
   	var obj = {
   		username: username,
@@ -54,8 +53,10 @@ var sendMsg = function(){
 }
 //  接受更新消息
 socket.on('message', function(obj) {
-	var reg=/\</gi;
-	obj.message = obj.message.replace(reg,'&lt;')
+	var regLt=/\</gi;
+    var regEnter = /\n/gi;
+    var regSpace = /\s/g;
+	obj.message = obj.message.replace(regLt,'&lt;').replace(regEnter,"<br>").replace(regSpace,"&nbsp;&nbsp;");
 	if(obj.username == username){
 		$('.chat_window').append("<section class='my_chat'><div class='my_name'>"+obj.username+"</div><span class='my_msg'>"+obj.message+"</span></section>");
 	}
