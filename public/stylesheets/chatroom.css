@@ -9,6 +9,82 @@ body {
 	#header,.chat_window,.input_text{width:100%!important;margin:0!important;}
 }
 
+.userList {
+	position: absolute;
+	letter-spacing: 0;
+	width: 18%;
+	max-height:60%;
+	display: block;
+	left:1%;
+	top:2%;
+	overflow: hidden;
+}
+.userList img{
+	width:15%;
+	height:32px;
+	vertical-align: top;
+	transition:all 0.5s 0.5s;
+}
+.userList .openMenuImg{
+	transform:rotateY(180deg);
+	transition:all 0.5s;
+}
+
+.userList .exitChatRoom{
+	display: inline-block;
+	position: relative;
+	z-index: 1;
+	height:32px;
+	border-top: 1px #000 solid;
+	border-bottom: 1px #000 solid;
+	width:85%;
+	text-align: center;
+	line-height: 32px;
+	background-color: #333;
+	color:#FFF;
+	z-index: 1;
+	border-radius: 5px 5px 0 0;
+	transform:rotateY(180deg);
+	opacity: 0;
+	transition:all 0.5s 0.5s;
+}
+.userList .openMenuDiv{
+	transform:rotateY(0);
+	opacity: 1;
+	transition:all 0.5s;;
+}
+.userList .online_people{
+	position: relative;
+	width:85%;
+	margin-left:15%;
+	list-style: none;
+	height:auto;
+	max-height: 60%;
+	opacity: 0;
+	transform:translateY(-100%);
+	transition:all 0.5s;
+}
+.userList .openMenuUl {
+	opacity: 1;
+	transform:translateY(0);
+	transition:all 0.5s 0.5s;
+}
+.userList .online_people li{
+	height:35px;
+	line-height: 35px;
+	width:100%;
+	text-align: center;
+	color:#FFF;
+	background-color: #666;
+}
+.userList .online_people li:last-child{
+	border-bottom: 0;
+	border-radius: 0 0 5px 5px;
+}
+.userList .online_people li a{
+	color:#FFF;
+	border: none;
+}
 #header {
 	height:10%;
 	width:60%;
@@ -48,7 +124,7 @@ body {
 	overflow-y: auto;
 	overflow-x:hidden;
 }
-.chat_window .online_people{
+.chat_window .online_number{
 	left:50%;
 	margin-left:-60px;
 	width:122px;
@@ -59,7 +135,7 @@ body {
 .newUser{
 	display: block;
 	position: absolute;
-	right:-20%;
+	right:-30%;
 	top:10%;
 	background-color: #34495E;
 	color:#FFF;
@@ -198,7 +274,46 @@ section>span {
 	height:25%;
 	position: relative;
 }
-
+.input_text .emoji {
+	display: block;
+	width:98%;
+	height:60%;
+	position: absolute;
+	top: 0;
+	left:1%;
+	border:1px #999 solid;
+	border-bottom:none;
+	transition:top 0.8s;
+}
+.input_text .emoji .emoji_package {
+	width:100%;
+	height:100%;
+	overflow-y: auto;
+	background-color: #EFEFEE;
+}
+.input_text .emoji::before{
+	content: '';
+	position: absolute;
+	width:0;
+	height:0;
+	background-color: #F2F2F2;
+	left:50%;
+	top:-21px;
+	margin-left:-50px;
+	border-left: 50px solid transparent;
+    border-bottom: 20px solid #999;
+    border-right: 50px solid transparent;
+}
+.input_text .emoji_active{
+	top:-60%;
+	transition:top 0.8s;
+}
+.emoji_package>span{
+	display: inline-block;
+	line-height: 25px;
+	padding:5px 10px 5px 10px;
+	cursor: pointer;
+}
 textarea {
 	position: absolute;
 	resize:none;

@@ -10,25 +10,63 @@
 <link rel='stylesheet' href='/stylesheets/chatroom.css'/>
 </head>
 <body>
+<div class="userList">
+	<img src="images/menu.png" alt="menu" /><div class="exitChatRoom">在线人员</div>
+	<ul class="online_people">
+		<li><a href='/'>退出聊天室</a></li>
+	</ul>
+</div>
 <div id="header">
 	<img src="images/logo_g.jpg" alt="Logo">
 	<p>NightCAT Chatroom</p>
 </div>
 <div class="chat_window">
-	<div class="online_people">当前在线人数为:<span></span></div>
+	<div class="online_number">当前在线人数为:<span></span></div>
 </div>
 <div class="input_text">
-<textarea id="message"></textarea>
-<button>发送消息</button>
+	<div class="emoji">
+		<div class="emoji_package">
+			<span>╮(￣▽￣)╭</span>
+			<span>(°ー°〃)</span>
+			<span>(>_<)</span>
+			<span> ⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄</span>
+			<span> (=ﾟωﾟ)ﾉ</span>
+			<span>（＞▽＜）</span>
+			<span>✪ε✪</span>
+			<span> ( ・◇・)？</span>
+			<span>ヾ(o◕∀◕)ﾉ</span>
+			<span> ｡◕‿◕｡ </span>
+			<span>(╬▔皿▔)</span>
+			<span>(´･_･`)</span>
+			<span>(*´Д｀*)</span>
+			<span>(｡・`ω´･)</span>
+			<span>(╯‵□′)╯︵┻━┻</span>
+			<span>(￣ε(#￣)☆╰╮o(￣皿￣///)</span>
+			<span>(ΦωΦ)</span>
+			<span> (╭￣3￣)╭♡</span>
+			<span>(´・ω・`)</span>
+			<span>_(:3」∠)_</span>
+			<span>(ﾟДﾟ≡ﾟдﾟ)!?</span>
+			<span>←_←</span>
+			<span>( ´_ゝ｀)</span>
+			<span>ヽ(`Д´)ﾉ</span>
+			<span>(ﾟДﾟ≡ﾟдﾟ)!?</span>
+			<span>( ＿ ＿)ノ｜扶墙</span>
+			<span> o(*≧▽≦)ツ┏━┓拍桌狂笑</span>
+		</div>
+	</div>
+	<textarea id="message"></textarea>
+	<button>发送消息</button>
 </div>
 </form>
-<div class="newUser"><img src="images/news.png"/><span></span></div>
+<div class="newUser"><img src=""/><span></span></div>
 </body>
 <script src="/javascripts/socket.io.js"></script>
 <script>
 var socket = io.connect('http://localhost:3000');
 var username = '<%= username %>';
 var number = 0;
+var user_list = '';
 var online = {
 	number: 0,
 	people: {}
@@ -37,6 +75,7 @@ var online = {
 $(function(){
 //  发送新登录用户
 socket.emit('update', username);
+socket.emit('exit',username);
 })
 
 //  发送消息方法
@@ -72,6 +111,7 @@ socket.on('message', function(obj) {
 socket.on('update',function(obj) {
 	if(online.number<obj.number){
 		$('.newUser>span').text(obj.people[obj.people.length-1]+'进入聊天室');
+		$('.newUser>img').attr('src','images/newUser.png');
 		$('.newUser').addClass('newUser_out');
 		popup_news();
 	}
@@ -79,6 +119,7 @@ socket.on('update',function(obj) {
 		for(var i=0;i<online.number;i++){
 			if(online.people[i]!==obj.people[i]){
 				$('.newUser>span').text(online.people[i]+'退出聊天室');
+				$('.newUser>img').attr('src','images/exitUser.png');
 				$('.newUser').addClass('newUser_out');
 				popup_news();
 				break;
@@ -88,7 +129,13 @@ socket.on('update',function(obj) {
 
 	online.number=obj.number;
 	online.people=obj.people;
-	$('.online_people>span').text(online.number);
+	$('.online_number>span').text(online.number);
+	for(var i=0;i<online.number;i++){
+		user_list += '<li>'+online.people[i]+'</li>';
+	}
+	$('.online_people li:not(:last-child)').remove();
+	$('.online_people').prepend(user_list);
+	user_list = '';
 })
 
 //  轮询判断用户是否退出
@@ -112,8 +159,28 @@ $(window).keydown(function (event) {
 var popup_news = function(){
 	setTimeout(function(){
 		$('.newUser').removeClass('newUser_out');
-	},3000);
+	},1500);
 }
 
+//  菜单
+$('.userList>img').click(function(){
+	if($(this).hasClass('openMenuImg')){
+		$(this).removeClass('openMenuImg');
+		$('.exitChatRoom').removeClass('openMenuDiv');
+		$('.online_people').removeClass('openMenuUl');
+	}
+	else{
+	$(this).addClass('openMenuImg');
+	$('.exitChatRoom').addClass('openMenuDiv');
+	$('.online_people').addClass('openMenuUl');
+	}
+})
+//  表情
+$('.emoji').click(function(event){
+	if($(event.target).is('span')){
+		$('#message').val($('#message').val()+$(event.target).text());
+	}
+	$(this).toggleClass('emoji_active');
+})
 </script>
 </html>
