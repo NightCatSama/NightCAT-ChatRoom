@@ -5,6 +5,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+//  hat模块生成不重复ID
+var hat = require('hat');
+var rack = hat.rack();
+
 var routes = require('./routes/index');
 
 //  mongoDB module
@@ -65,7 +69,7 @@ app.post('/inputData',function(req,res){
     "username" : username
   },function(err,docs){
     if(docs==''||docs==null){
-      var UID = Math.ceil(Math.random()*9000000000+999999999);
+      var UID = rack();
       collection.insert({
         "username" : username,
         "password" : password,

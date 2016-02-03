@@ -18,7 +18,7 @@ router.get('/chatroom', function(req, res, next) {
 	var username = '';
 	var collection = db.get("userdata");
 	var stringA = req.originalUrl;
-	var UID =  parseInt(stringA.substr(stringA.indexOf("?")+5));
+	var UID =  stringA.substr(stringA.indexOf("?")+5)
 	if(UID!=''&&UID!=null){flag=true;}
 	collection.find({
     	"UID" : UID
