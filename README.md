@@ -1,8 +1,11 @@
 # NightCAT-ChatRoom
+
 ####基于NodeJS+Express4.x模块+socket.io模块+MongoDB数据库制作的多人聊天室<br>
+**在线体验地址 →[NightCAT-ChatRoom](http://114.215.155.136/)**
+<br>
 *已完全实现了所有功能, 欢迎Pull Requests╰(●'◡'●)╮*
 <br>
-**并且内含大量中文注释，适合入门初学者使用**
+*并且内含大量中文注释，适合入门初学者使用*
 <br>
 第一步:
 -----
