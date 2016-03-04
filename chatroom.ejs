@@ -6,7 +6,7 @@
 <link rel = "Shortcut Icon" href=/favicon.ico> 
 <meta name="applicable-device" content="pc,mobile">
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
-<script src="//cdn.bootcss.com/jquery/1.12.0/jquery.min.js"></script>
+<script src="/javascripts/jquery-1.12.0.min.js"></script>
 <link rel='stylesheet' href='/stylesheets/chatroom.css'/>
 </head>
 <body>
@@ -62,7 +62,7 @@
 </body>
 <script src="/javascripts/socket.io.js"></script>
 <script>
-var socket = io.connect('http://localhost:3000/');
+var socket = io.connect('http://localhost:3000');
 var username = '<%= username %>';
 var number = 0;
 var user_list = '';

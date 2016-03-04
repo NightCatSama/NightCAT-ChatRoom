@@ -3,14 +3,12 @@
   <head>
     <title>注册页面</title>
     <meta charset="utf-8"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">    
-    <meta name="applicable-device" content="pc,mobile">
-    <script src="//cdn.bootcss.com/jquery/1.12.0/jquery.min.js"></script>
+    <script src="/javascripts/jquery-1.12.0.min.js"></script>
     <link rel='stylesheet' href='/stylesheets/register.css' />
   </head>
   <body>
   <div id="index_page">
-    <h1><img src="images/logo_b.jpg" alt="Logo">账号注册</h1>
+    <h1><img src="images/logo_b.jpg" alt="Logo">新用户注册</h1>
     <form method="POST" id="register" onsubmit="return validate_form(this)">
     <fieldset>
       <div>
@@ -52,42 +50,32 @@ function validate_password(alerttxt){
 }
 //  判断账号密码是否为空
 function validate_required(field,alerttxt){
-  if (field.value==null||field.value=="")
-    {alert(alerttxt);ajaxFlag = false;return false}
-  else {ajaxFlag = true;return true}
-}
-//  判断账号是否合法
-function validata_unable(field,alerttxt){
-  var regu = "^[0-9a-zA-Z\u4e00-\u9fa5]+$";  
-  var re = new RegExp(regu);
-  if (re.test(field.value)){
-    ajaxFlag = true;
-    return true;
-  }else{
-    alert(alerttxt);
-    ajaxFlag = false;
-    return false;
+  with (field){
+    if (value==null||value=="")
+      {alert(alerttxt);ajaxFlag = false;return false}
+    else {ajaxFlag = true;return true}
   }
 }
 //  判断账号是否超过字数
-function validata_overlong(field,alerttxt){
-  if (field.value.length>10)
-    {alert(alerttxt,"warning");ajaxFlag = false;return false}
-  else {ajaxFlag = true;return true}
+function validata_unable(field,alerttxt){
+    with (field){
+    if (value.length>10)
+      {alert(alerttxt);ajaxFlag = false;return false}
+    else {ajaxFlag = true;return true}
+  }
 }
+
 function validate_form(thisform){
-  if (validata_overlong(thisform.username,"用户名不能超过10个字符")==false)
-   {thisform.username.focus();ajaxFlag = false;return false}
-  if (validate_required(thisform.username,"用户名不能为空")==false)
-   {thisform.username.focus();ajaxFlag = false;return false}
-  if (validata_unable(thisform.username,"用户名必须由中文、数字或字母组成")==false)
-   {thisform.username.focus();ajaxFlag = false;return false}
-  if (validate_required(thisform.password,"密码不能为空")==false)
-   {thisform.password.focus();ajaxFlag = false;return false}
-  if (validata_unable(thisform.password,"密码必须由数字或字母组成")==false)
-   {thisform.username.focus();ajaxFlag = false;return false}
-  if (validate_password("请再一次输入密码")==false)
-   {p_again.focus();ajaxFlag = false;return false}
+  with (thisform){
+    if (validate_required(username,"用户名不能为空")==false)
+     {username.focus();ajaxFlag = false;return false}
+    if (validata_unable(username,"用户名不能超过10个字符")==false)
+     {username.focus();ajaxFlag = false;return false}
+    if (validate_required(password,"密码不能为空")==false)
+     {password.focus();ajaxFlag = false;return false}
+    if (validate_password("请再一次输入密码")==false)
+     {p_again.focus();ajaxFlag = false;return false}
+  }
   ajaxFlag = true;
   return false;
 }
@@ -103,7 +91,7 @@ if(ajaxFlag){
     data: $form.serialize(),
     success: function(data){
       if(data=='用户名已存在'){console.log(data);alert(data);return false;}
-      else {alert('注册成功！');window.history.go(-1);}
+      else {alert('注册成功！');location.href ="/";}
     },
     error: function(error){
       console.log("ERROR:   "+error);

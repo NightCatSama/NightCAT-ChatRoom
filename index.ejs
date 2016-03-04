@@ -3,10 +3,8 @@
   <head>
     <meta charset="utf-8"> 
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">    
-    <meta name="applicable-device" content="pc,mobile">
     <title>NightCAT Chatroom</title>
-    <script src="//cdn.bootcss.com/jquery/1.12.0/jquery.min.js"></script>
+    <script src="/javascripts/jquery-1.12.0.min.js"></script>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
@@ -32,19 +30,30 @@
 <script>
 //  客户端验证没通过时，不提交到服务端认证
 var ajaxFlag = true;
+//  服务端发来验证失败文本
+var alerttext = "<%= alerttext %>";
 
 //  客户端输入验证
-function validate_required(field,alerttxt){
-  if (field.value==null||field.value=="")
+if(alerttext){alert(alerttext);alerttext='';}
+  function validate_required(field,alerttxt)
+{
+with (field)
+  {
+  if (value==null||value=="")
     {alert(alerttxt);ajaxFlag = false;return false}
   else {ajaxFlag = true;return true}
+  }
 }
 
-function validate_form(thisform){
-  if (validate_required(thisform.username,"用户名不能为空")==false)
-    {thisform.username.focus();ajaxFlag = false;return false}
-    if (validate_required(thisform.password,"密码不能为空")==false)
-    {thisform.password.focus();ajaxFlag = false;return false}
+function validate_form(thisform)
+{
+with (thisform)
+  {
+  if (validate_required(username,"用户名不能为空")==false)
+    {username.focus();ajaxFlag = false;return false}
+    if (validate_required(password,"密码不能为空")==false)
+    {password.focus();ajaxFlag = false;return false}
+  }
   ajaxFlag = true;return false;
 }
 
@@ -59,7 +68,7 @@ if(ajaxFlag){
     async: false,
     data: $form.serialize(),
     success: function(data){
-      if(data=='密码错误'||data=='用户名不存在'){alert(data);return false;}
+      if(data=='密码错误'||data=='用户名不存在'){console.log(data);alert(data);return false;}
       
       else {location.href ="Chatroom?UID="+data.UID;}
     },
@@ -74,5 +83,6 @@ if(ajaxFlag){
 $(window).keydown(function (event) {
     if (event.keyCode == 13) { ajaxsubmit(); }
 });
+
 </script>
 </html>
