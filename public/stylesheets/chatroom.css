@@ -8,6 +8,9 @@ body {
 	.userList{display:none!important;}
 	#header,.chat_window,.input_text{width:100%!important;margin:0!important;}
 }
+@media all and (max-height:650px) {
+	#header p{display: none!important;}
+}
 
 .userList {
 	position: absolute;
@@ -325,7 +328,6 @@ textarea {
 	color:#34495E;
 	border:1px #ccc solid;
 }
-
 button {
 	position: absolute;
 	background-color: #FFF;
@@ -336,7 +338,7 @@ button {
 	outline: none;
 	padding:10px 25px;
 	right:20px;
-	top:75%;
+	bottom:3%;
 	cursor: pointer;
 	font-weight: bold;
 }
