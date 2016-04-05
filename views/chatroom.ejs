@@ -55,7 +55,8 @@
 		</div>
 	</div>
 	<textarea id="message"></textarea>
-	<button>发送消息</button>
+	<div href="javascript:;" id="sendImg"><input type="file" value="Image" accept="image/png,image/gif,image/jpeg" name="file" ><img src="images/image.png" alt=""></div>
+	<button id="sendMsg">发送消息</button>
 </div>
 </form>
 <div class="newUser"><img src=""/><span></span></div>
@@ -74,7 +75,6 @@ var online = {
 $(function(){
 //  发送新登录用户
 socket.emit('update', username);
-socket.emit('exit',username);
 })
 
 //  发送消息方法
@@ -103,7 +103,7 @@ socket.on('message', function(obj) {
 		$('.chat_window').append("<section class='all_chat'><div class='all_name'>"+obj.username+"</div><span class='all_msg'>"+obj.message+"</span></section>");
 	}
 	//  聊天框置底
-	$('.chat_window').scrollTop($('.chat_window').scrollTop()+1000);
+	$('.chat_window').scrollTop($('.chat_window').scrollTop()+9999);
 });
 
 //  获得在线人数与在线名单
@@ -136,11 +136,6 @@ socket.on('update',function(obj) {
 	$('.online_people').prepend(user_list);
 	user_list = '';
 })
-
-//  轮询判断用户是否退出
-setInterval(function(){
-	socket.emit('exit',username);
-},2000);
 
 //  点击发送或回车 > 发送消息
 $('button').click(sendMsg);
@@ -181,5 +176,31 @@ $('.emoji').click(function(event){
 	}
 	$(this).toggleClass('emoji_active');
 })
+
+//  发送图片
+$("#sendImg").on("change","input[type='file']",function(){
+     if (this.files.length != 0) {
+         var file = this.files[0],
+             reader = new FileReader();
+         if (!reader) {
+         	 alert("不支持发送图片!");
+             return;
+         };
+         reader.onload = function(e) {
+         	$('.chat_window').append("<section class='my_chat'><div class='my_name'>"+username+"</div><span class='my_msg'><img src='"+ e.target.result+"' /></span></section>");
+         	$('.chat_window').scrollTop($('.chat_window').scrollTop()+99999);
+             socket.emit('img', {"username" : username , "image" : e.target.result});
+         };
+         reader.readAsDataURL(file);
+     };
+});
+
+//  图片接收
+socket.on('img', function(obj){
+	$('.chat_window').append("<section class='all_chat'><div class='all_name'>"+obj.username+"</div><span class='all_msg'><img src='"+obj.image+"' /></span></section>");
+
+	$('.chat_window').scrollTop($('.chat_window').scrollTop()+99999);
+});
+
 </script>
 </html>

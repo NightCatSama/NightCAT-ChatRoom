@@ -177,7 +177,7 @@ section {
 	padding: 5px 0;
 }
 section:nth-child(2){
-	margin-top:10px;
+	margin-top:15px;
 }
 section:last-child{
 	margin-bottom:10px;
@@ -201,7 +201,7 @@ section>span {
 	padding:10px 12px 7px 12px;
 	min-height:25px;
 	border-radius: 10px;
-	max-width:80%;
+	max-width:65%;
 	background-color: #FFF;
 	word-wrap:break-word;
 }
@@ -328,7 +328,10 @@ textarea {
 	color:#34495E;
 	border:1px #ccc solid;
 }
-button {
+textarea:focus {
+	border: rgba(0,175,250,.6) 1px solid;
+}
+#sendMsg {
 	position: absolute;
 	background-color: #FFF;
 	color:#999;
@@ -336,18 +339,47 @@ button {
 	width:120px;
 	border:1px #999 solid;
 	outline: none;
-	padding:10px 25px;
 	right:20px;
-	bottom:3%;
+	top: 73%;
+	height: 24%;
+	max-height: 50px;
 	cursor: pointer;
 	font-weight: bold;
 }
-button::before{
+#sendMsg::before{
 	content: '按下Ctrl+Enter换行';
 	cursor: default;
 	color:#999;
 	position: absolute;
 	left:-130px;
-	top:10px;
 }
-button:focus{outline: none;}
+#sendMsg:hover {
+	background-color: #EEE;
+}
+
+#sendImg {
+    position: absolute;
+    top: 72%;
+    left: 1%;
+    display: inline-block;
+    border-radius: 4px;
+    overflow: hidden;
+    color: #1E88C7;
+    text-decoration: none;
+}
+#sendImg input {
+    position: absolute;
+    cursor: pointer;
+    right: 0;
+    top: 0;
+    opacity: 0;
+}
+
+#sendImg img {
+	height:20px;
+	width:20px;
+}
+
+.chat_window img {
+	max-width: 99%;
+}

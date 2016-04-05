@@ -49,55 +49,47 @@ var timeoutFlag = {};
 
 
 io.sockets.on('connection', function (socket) {
-  var message = '';
+  var message = ''
+  var name = ''
     //监听用户发布聊天内容
     socket.on('message', function(obj){
         //向所有客户端广播发布的消息
-        io.emit('message', obj);
-        console.log(obj.username+'说：'+obj.message);
-    });
+        io.emit('message', obj)
+        console.log(obj.username+'说：'+obj.message)
+    })
     //  添加新用户并发布出去
     socket.on('update',function(obj){
         if(!online_people.people.some(function(item, index, array){
            return online_people.people[index]==obj})
-        ){
-        online_people.people.push(obj);
-        online_people.number = online_people.number +1 ;
-        
-        setTimeout(function(){
-          io.emit('update', online_people);
-        },200);
-        console.log('总人数为:'+online_people.number+'!人员名单为'+online_people.people);
+        ){ 
+            name = obj;
+            online_people.people.push(obj)
+            online_people.number = online_people.number +1 
         }
-        else {
-            setTimeout(function(){
-               clearTimeout(timeoutFlag[obj]);
-            io.emit('update', online_people);
-            },200);
-            console.log('总人数为:'+online_people.number+'!人员名单为'+online_people.people);
-        }
-    });
+        io.emit('update', online_people)
+        console.log('总人数为:'+online_people.number+'     人员名单为'+online_people.people)
+    })
 
-    //  监听用户退出并发布出去
-    socket.on('exit',function(obj){
-        clearTimeout(timeoutFlag[obj]);
-        if(online_people.people.some(function(item, index, array){
-           return online_people.people[index]==obj})
-        )
-        {
-          timeoutFlag[obj] = setTimeout(function(){
-            // console.log(online_people.people+'---减一之前---'+online_people.number)
-            online_people.number = online_people.number -1 ;
-            var index = online_people.people.indexOf(obj);
-            online_people.people.splice(index,1);
+  // 接收图片
+  socket.on('img',function(obj){
+    socket.broadcast.emit('img',obj)
+  })
+  
+  // 用户退出聊天室时
+  socket.on('disconnect', function() {
+      if(online_people.people.some(function(item, index, array){
+         return online_people.people[index]==name
+        })
+      ){
+        online_people.number = online_people.number - 1 
+        var index = online_people.people.indexOf(name)
+        online_people.people.splice(index,1)
 
-            console.log("用户"+obj+"退出了聊天室");
-            // console.log(online_people.people+'---减一之后---'+online_people.number)
-          },4000);
-        }
-        // console.log(online_people.people+"---Exit消息收到了---"+obj);
-        io.emit('update', online_people);
-    });
+        console.log(name+"退出了聊天室")
+
+        io.emit('update', online_people)
+      }
+  });
 });
 
 function normalizePort(val) {
